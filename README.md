@@ -1,1 +1,1 @@
-# ContraProof# LeanContraProof
+# LeanContraProof
