@@ -1,0 +1,10 @@
+name = "ContraProof"
+version = "0.1.0"
+defaultTargets = ["contraproof"]
+
+[[lean_lib]]
+name = "ContraProof"
+
+[[lean_exe]]
+name = "contraproof"
+root = "Main"
