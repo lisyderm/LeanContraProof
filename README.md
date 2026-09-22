@@ -54,3 +54,7 @@ lake exe contraproof
 ```
 
 To evaluate a dance instantly, open `Main.lean` in VS Code and use the Lean 4 Infoview. The `#eval` commands paired with `checkPhrasing` and `checkProgressive` instantly output `true` or `false`.
+---
+
+## Valid Choreography Example
+<iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube-nocookie.com/embed/-1cPyJWm-g4" title="Crowfoot in Tacoma" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
