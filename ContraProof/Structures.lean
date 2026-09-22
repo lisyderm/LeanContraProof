@@ -51,4 +51,4 @@ structure SpatialFigure where
   transition : HallState → HallState
 
 
-def Dance := List SpatialFigure  -- this should go in a different file?
+def Dance := List SpatialFigure
