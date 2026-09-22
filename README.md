@@ -58,4 +58,6 @@ To evaluate a dance instantly, open `Main.lean` in VS Code and use the Lean 4 In
 ---
 
 ## Valid Choreography Example
-<iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube-nocookie.com/embed/-1cPyJWm-g4" title="Crowfoot in Tacoma" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+_Click for video:_
+
+[![Spring Break by Nils Fredland](https://img.youtube.com/vi/-1cPyJWm-g4/hqdefault.jpg)](https://www.youtube.com/watch?v=-1cPyJWm-g4)
