@@ -26,20 +26,25 @@ def ValidBeats (d : Dance) : Prop :=
 ----------------------
 -- Verify Progression
 ----------------------
--- A helper checker for the computable Bool evaluation
-def checkDancer (initial final : HallState) (c : CoupleNum) (r : RoleType) (delta : Int) : Bool :=
+-- Determine the required progression direction based on the couple number
+def expectedDelta (c : CoupleNum) : Int :=
+  match c with
+  | CoupleNum.One => 1   -- Actives always move down
+  | CoupleNum.Two => -1  -- Inactives always move up
+
+def checkDancer (initial final : HallState) (c : CoupleNum) (r : RoleType) : Bool :=
   let p := final ⟨c, r⟩
   let i := initial ⟨c, r⟩
+  let delta := expectedDelta c
   p.setIndex == i.setIndex + delta && p.slot == i.slot
 
--- The computable boolean version for #eval testing
 def checkProgressive (d : Dance) : Bool :=
   let initial := d.startingFormation
   let final := runDance d
-  checkDancer initial final CoupleNum.One RoleType.Lark 1 &&
-  checkDancer initial final CoupleNum.One RoleType.Robin 1 &&
-  checkDancer initial final CoupleNum.Two RoleType.Lark (-1) &&
-  checkDancer initial final CoupleNum.Two RoleType.Robin (-1)
+  checkDancer initial final CoupleNum.One RoleType.Lark &&
+  checkDancer initial final CoupleNum.One RoleType.Robin &&
+  checkDancer initial final CoupleNum.Two RoleType.Lark &&
+  checkDancer initial final CoupleNum.Two RoleType.Robin
 
 -- The formal proposition that a dance is progressive
 -- Define IsProgressive as a Prop tied to the Bool checker
