@@ -4,24 +4,10 @@ import ContraProof.Figures
 import ContraProof.Verification
 
 -- ==========================================
--- 1. INITIAL STATE (The Starting Formation)
+-- Dances for Testing
 -- ==========================================
 
--- Defines a standard improper starting formation for a minor set at setIndex 0.
-def initialImproper : HallState := fun dancer =>
-  match dancer.couple, dancer.role with
-  -- Actives (Couple 1) start at the top
-  | CoupleNum.One, RoleType.Lark  => { setIndex := 0, slot := Slot.TopRight }
-  | CoupleNum.One, RoleType.Robin => { setIndex := 0, slot := Slot.TopLeft }
-  -- Inactives (Couple 2) start at the bottom, crossed
-  | CoupleNum.Two, RoleType.Lark  => { setIndex := 0, slot := Slot.BottomLeft }
-  | CoupleNum.Two, RoleType.Robin => { setIndex := 0, slot := Slot.BottomRight }
-
--- ==========================================
--- 2. THE CHOREOGRAPHY
--- ==========================================
-
--- Bob Crawford's transcription of The Baby Yoda
+-- The Baby Yoda: starting state is improper w/neighbor swing
 def babyYoda : Dance := [
   circleLeft 3 8,
   inPlace "Partners do si do once" 8,
@@ -29,8 +15,7 @@ def babyYoda : Dance := [
   sideSwing "Partners swing" 12,
   robinsChain 8,
   leftStar 4 8,
-  -- Pushes dancers into the adjacent set & checks direction of travel
-  progress "Onto new neighbors" 0,
+  progress "Onto new neighbors" 0, -- Pushes dancers into the adjacent set
   inPlace "New Neighbor Balance" 4,
   sideSwing "Neighbors swing" 12
 ]
@@ -65,7 +50,7 @@ def easyPeasy : Dance := [
 ]
 
 -- ==========================================
--- 3. THE VERIFICATION TESTS
+-- VERIFICATION TESTS
 -- ==========================================
 
 -- Check if the total beat count equals 64
@@ -74,7 +59,7 @@ def easyPeasy : Dance := [
 #eval checkPhrasing easyPeasy
 
 -- Check if the topology successfully progresses the couples
-#eval checkProgressive babyYoda initialImproper
+#eval checkProgressive babyYoda initialImproperWithNeighborSideSwing
 #eval checkProgressive babyRose initialImproper
 #eval checkProgressive easyPeasy initialImproper
 
