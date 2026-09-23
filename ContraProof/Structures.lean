@@ -36,43 +36,34 @@ structure Position where
   slot : Slot
   deriving Repr, DecidableEq
 
--- 3. THE HALL STATE
+-- THE HALL STATE
 -- Instead of a MinorSet holding dancers, the Hall State is a function
 -- mapping every Dancer to their current physical Position.
 def HallState := Dancer → Position
 
--- ==========================================
--- INITIAL STATE (The Starting Formation)
--- ==========================================
-
--- Defines a standard improper starting formation for a minor set at setIndex 0.
-def initialImproper : HallState := fun dancer =>
-  match dancer.couple, dancer.role with
-  -- Actives (Couple 1) start at the top
-  | CoupleNum.One, RoleType.Lark  => { setIndex := 0, slot := Slot.TopRight }
-  | CoupleNum.One, RoleType.Robin => { setIndex := 0, slot := Slot.TopLeft }
-  -- Inactives (Couple 2) start at the bottom, crossed
-  | CoupleNum.Two, RoleType.Lark  => { setIndex := 0, slot := Slot.BottomLeft }
-  | CoupleNum.Two, RoleType.Robin => { setIndex := 0, slot := Slot.BottomRight }
-
--- Defines a standard improper starting formation for a minor set at setIndex 0.
-def initialImproperWithNeighborSideSwing : HallState := fun dancer =>
-  match dancer.couple, dancer.role with
-  -- Actives (Couple 1) start at the top
-  | CoupleNum.One, RoleType.Lark  => { setIndex := 0, slot := Slot.BottomRight }
-  | CoupleNum.One, RoleType.Robin => { setIndex := 0, slot := Slot.BottomLeft }
-  -- Inactives (Couple 2) start at the bottom, crossed
-  | CoupleNum.Two, RoleType.Lark  => { setIndex := 0, slot := Slot.TopLeft }
-  | CoupleNum.Two, RoleType.Robin => { setIndex := 0, slot := Slot.TopRight }
-
--- 4. FIGURES AS TOPOLOGICAL TRANSFORMATIONS
--- A figure moves dancers to new positions based on where they currently stand.
 structure SpatialFigure where
   name : String
   beats : Nat
-  -- In a full implementation, this function calculates the new Position
-  -- (both `slot` and `setIndex`) based on the geometry of the move.
   transition : HallState → HallState
 
+structure Dance where
+  name : String
+  beats: Nat
+  startingFormation : HallState
+  figures : List SpatialFigure
 
-def Dance := List SpatialFigure
+-- INITIAL STATES (Dance Starting Formations)
+
+def initialImproper : HallState := fun dancer =>
+  match dancer.couple, dancer.role with
+  | CoupleNum.One, RoleType.Lark  => { setIndex := 0, slot := Slot.TopRight }
+  | CoupleNum.One, RoleType.Robin => { setIndex := 0, slot := Slot.TopLeft }
+  | CoupleNum.Two, RoleType.Lark  => { setIndex := 0, slot := Slot.BottomLeft }
+  | CoupleNum.Two, RoleType.Robin => { setIndex := 0, slot := Slot.BottomRight }
+
+def initialImproperWithNeighborSideSwing : HallState := fun dancer =>
+  match dancer.couple, dancer.role with
+  | CoupleNum.One, RoleType.Lark  => { setIndex := 0, slot := Slot.BottomRight }
+  | CoupleNum.One, RoleType.Robin => { setIndex := 0, slot := Slot.BottomLeft }
+  | CoupleNum.Two, RoleType.Lark  => { setIndex := 0, slot := Slot.TopLeft }
+  | CoupleNum.Two, RoleType.Robin => { setIndex := 0, slot := Slot.TopRight }
