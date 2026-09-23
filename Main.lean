@@ -11,7 +11,7 @@ import ContraProof.Verification
 def babyYoda : Dance := {
   name := "The Baby Yoda",
   beats := 64,
-  startingFormation := initialImproperWithNeighborSideSwing,
+  formation := initialImproperWithNeighborSideSwing,
   figures := [
     circleLeft 3 8,
     inPlace "Partners do si do once" 8,
@@ -29,7 +29,7 @@ def babyYoda : Dance := {
 def babyRose : Dance := {
   name := "The Baby Rose",
   beats := 64,
-  startingFormation := initialImproper,
+  formation := initialImproper,
   figures := [
     inPlace "New Neighbor Balance" 4,
     sideSwing "Neighbors swing" 12,
@@ -48,7 +48,7 @@ def babyRose : Dance := {
 def easyPeasy : Dance := {
   name := "Easy Peasy",
   beats := 64,
-  startingFormation := initialImproper,
+  formation := initialImproper,
   figures := [
     inPlace "New Neighbor Balance" 4,
     sideSwing "Neighbors swing" 12,

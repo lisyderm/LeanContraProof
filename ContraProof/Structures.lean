@@ -46,24 +46,50 @@ structure SpatialFigure where
   beats : Nat
   transition : HallState → HallState
 
-structure Dance where
-  name : String
-  beats: Nat
-  startingFormation : HallState
-  figures : List SpatialFigure
+-- A Formation bundles the hall layout with the participating dancers
+structure Formation where
+  state : HallState
+  dancers : List Dancer
 
 -- INITIAL STATES (Dance Starting Formations)
 
-def initialImproper : HallState := fun dancer =>
-  match dancer.couple, dancer.role with
-  | CoupleNum.One, RoleType.Lark  => { setIndex := 0, slot := Slot.TopRight }
-  | CoupleNum.One, RoleType.Robin => { setIndex := 0, slot := Slot.TopLeft }
-  | CoupleNum.Two, RoleType.Lark  => { setIndex := 0, slot := Slot.BottomLeft }
-  | CoupleNum.Two, RoleType.Robin => { setIndex := 0, slot := Slot.BottomRight }
+def twoCoupleDancers : List Dancer := [
+  ⟨CoupleNum.One, RoleType.Lark⟩,
+  ⟨CoupleNum.One, RoleType.Robin⟩,
+  ⟨CoupleNum.Two, RoleType.Lark⟩,
+  ⟨CoupleNum.Two, RoleType.Robin⟩
+]
 
-def initialImproperWithNeighborSideSwing : HallState := fun dancer =>
-  match dancer.couple, dancer.role with
-  | CoupleNum.One, RoleType.Lark  => { setIndex := 0, slot := Slot.BottomRight }
-  | CoupleNum.One, RoleType.Robin => { setIndex := 0, slot := Slot.BottomLeft }
-  | CoupleNum.Two, RoleType.Lark  => { setIndex := 0, slot := Slot.TopLeft }
-  | CoupleNum.Two, RoleType.Robin => { setIndex := 0, slot := Slot.TopRight }
+def initialImproper : Formation := {
+  state := fun dancer =>
+    match dancer.couple with
+    | CoupleNum.One =>
+        match dancer.role with
+        | RoleType.Lark  => { setIndex := 0, slot := Slot.TopRight }
+        | RoleType.Robin => { setIndex := 0, slot := Slot.TopLeft }
+    | CoupleNum.Two =>
+        match dancer.role with
+        | RoleType.Lark  => { setIndex := 0, slot := Slot.BottomLeft }
+        | RoleType.Robin => { setIndex := 0, slot := Slot.BottomRight },
+  dancers := twoCoupleDancers
+}
+
+def initialImproperWithNeighborSideSwing : Formation := {
+  state := fun dancer =>
+    match dancer.couple with
+    | CoupleNum.One =>
+        match dancer.role with
+        | RoleType.Lark  => { setIndex := 0, slot := Slot.BottomRight }
+        | RoleType.Robin => { setIndex := 0, slot := Slot.BottomLeft }
+    | CoupleNum.Two =>
+        match dancer.role with
+        | RoleType.Lark  => { setIndex := 0, slot := Slot.TopLeft }
+        | RoleType.Robin => { setIndex := 0, slot := Slot.TopRight },
+  dancers := twoCoupleDancers
+}
+
+structure Dance where
+  name : String
+  beats: Nat
+  formation : Formation
+  figures : List SpatialFigure

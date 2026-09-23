@@ -6,7 +6,7 @@ import ContraProof.Structures
 ----------------------
 -- Run the transition functions sequentially over the HallState
 def runDance (d : Dance) : HallState :=
-  d.figures.foldl (fun current fig => fig.transition current) d.startingFormation
+  d.figures.foldl (fun current fig => fig.transition current) d.formation.state
 
 ----------------------
 -- Verify Beat Count
@@ -32,19 +32,16 @@ def expectedDelta (c : CoupleNum) : Int :=
   | CoupleNum.One => 1   -- Actives always move down
   | CoupleNum.Two => -1  -- Inactives always move up
 
-def checkDancer (initial final : HallState) (c : CoupleNum) (r : RoleType) : Bool :=
-  let p := final ⟨c, r⟩
-  let i := initial ⟨c, r⟩
-  let delta := expectedDelta c
+def checkDancer (initial final : HallState) (dancer : Dancer) : Bool :=
+  let p := final dancer
+  let i := initial dancer
+  let delta := expectedDelta dancer.couple
   p.setIndex == i.setIndex + delta && p.slot == i.slot
 
 def checkProgressive (d : Dance) : Bool :=
-  let initial := d.startingFormation
+  let initial := d.formation.state
   let final := runDance d
-  checkDancer initial final CoupleNum.One RoleType.Lark &&
-  checkDancer initial final CoupleNum.One RoleType.Robin &&
-  checkDancer initial final CoupleNum.Two RoleType.Lark &&
-  checkDancer initial final CoupleNum.Two RoleType.Robin
+  d.formation.dancers.all (fun dancer => checkDancer initial final dancer)
 
 -- The formal proposition that a dance is progressive
 -- Define IsProgressive as a Prop tied to the Bool checker
